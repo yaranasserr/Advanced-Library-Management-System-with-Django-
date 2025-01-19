@@ -1,6 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-# Create your views here.
+from users.forms import InputForm
+
 
 def home(request):
-    return HttpResponse("Landing Page")
+    return render(request, 'home.html')
+
+
+def form_view(request):
+    form = InputForm()
+    return render(request, 'signup.html', {'form': form})
+
+def login_view(request):
+    form = InputForm()
+    return render(request, 'login.html', {'form': form})
