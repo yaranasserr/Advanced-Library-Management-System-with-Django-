@@ -14,3 +14,6 @@ def form_view(request):
 def login_view(request):
     form = InputForm()
     return render(request, 'login.html', {'form': form})
+
+def dashboard(request):
+    return render(request, 'dashboard.html')
