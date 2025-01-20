@@ -1,15 +1,21 @@
 from django import forms
+from .models import Profile  
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-class InputForm(forms.Form):
-    first_name = forms.CharField(max_length=100)
-    last_name = forms.CharField(max_length=100)
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
-    address = forms.CharField(max_length=100)
-    city = forms.CharField(max_length=100)
+class SignUpForm(UserCreationForm):
+ 
+    class Meta:
+        model =User
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
-    
-  
+class InputForm(forms.Form):
+    username = forms.CharField(max_length=255)
+    password = forms.CharField(widget=forms.PasswordInput())
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['street_address', 'city', 'state_province', 'postal_code', 'country']
+
