@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ author.author_name }}'s Books{% endblock %}
+
+{% block content %}
+    <h1>{{ author.author_name }}'s Books</h1>
+
+    <!-- Filter Form -->
+    <div class="filter-form">
+        <form method="GET" action="{% url 'author_detail' author.id %}">
+            <!-- Category filter -->
+            <input type="text" name="category_name" placeholder="Search Category" value="{{ request.GET.category_name }}">
+            <select name="category">
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                        {{ category.category_name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <!-- Library filter -->
+            <input type="text" name="library_name" placeholder="Search Library" value="{{ request.GET.library_name }}">
+            <select name="library">
+                <option value="">Select Library</option>
+                {% for library in libraries %}
+                    <option value="{{ library.id }}" {% if request.GET.library == library.id|stringformat:"s" %}selected{% endif %}>
+                        {{ library.library_name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Apply Filters</button>
+        </form>
+    </div>
+
+    <!-- Display Book List -->
+    <table>
+        <thead>
+            <tr>
+                <th>Book Name</th>
+                <th>Category</th>
+                <th>Library</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.book_name }}</td>
+                    <td>{{ book.category.category_name }}</td>
+                    <td>{{ book.library.library_name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Back Link -->
+    <a href="{% url 'authors' %}" class="back-link">Back to Author List</a>
+
+{% endblock %}
+
+<!-- Styles -->
+<style>
+    /* Table Styles */
+    table {
+        width: 100%;
+        border-collapse: collapse; /* Ensures borders collapse into a single line */
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd; /* Adds borders to both table cells and headers */
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    /* Filter Form Styles */
+    .filter-form {
+        margin-bottom: 20px;
+    }
+
+    .filter-form input, .filter-form select {
+        padding: 8px;
+        margin-right: 10px;
+    }
+
+    .filter-form button {
+        padding: 8px 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .filter-form button:hover {
+        background-color: #45a049;
+    }
+
+    /* Back Link Styles */
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #008CBA;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+
+    .back-link:hover {
+        background-color: #007B9E;
+    }
+</style>

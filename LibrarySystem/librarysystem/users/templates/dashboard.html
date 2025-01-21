@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Welcome, {{ first_name }}!</h1>
+    <p>This is your dashboard. You are now logged in and ready to explore!</p>
+
+    <!-- Button container for positioning -->
+    <div class="button-container">
+        <!-- Home Button -->
+        <a href="{% url 'home' %}">
+            <button class="home-btn">Go to Home</button>
+        </a>
+
+        <a href="{% url 'profile' %}">
+            <button class="profile-btn">Profile</button>
+        </a>
+
+        <!-- Logout Button -->
+        <a href="{% url 'logout' %}">
+            <button class="logout-btn">Logout</button>
+        </a>
+    </div>
+
+    <!-- Styles -->
+    <style>
+        /* Position the buttons at the top-right corner */
+        .button-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .button-container a {
+            margin-left: 10px;  /* Space between buttons */
+        }
+
+        /* Style for the logout button */
+        .logout-btn {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: darkred;
+        }
+
+        /* Style for the general button */
+        .home-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .home-btn:hover {
+            background-color: #45a049;
+        }
+
+        .profile-btn {
+            background-color: #4c90af;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .profile-btn:hover {
+            background-color: #4c90af;
+        }
+    </style>
+{% endblock %}

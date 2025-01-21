@@ -1,0 +1,54 @@
+<html>
+<head>
+</head>
+<body>
+    <div class="top-right-buttons">
+        <button onclick="location.href='{% url 'login' %}'">Login</button>
+        <button onclick="location.href='{% url 'signup' %}'">Signup</button>
+    </div>
+    <h1>Welcome to Library Management System</h1>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'library' %}">Libraries</a></li>
+            <li><a href="{% url 'books' %}">Books</a></li>
+            <li><a href="{% url 'authors' %}">Authors</a></li>
+        </ul>
+    </nav>
+
+    <!-- Styles below -->
+    <style>
+        .top-right-buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .top-right-buttons button {
+            margin-left: 10px;
+        }
+
+        nav ul li a[href="{% url 'library' %}"],
+        nav ul li a[href="{% url 'books' %}"],
+        nav ul li a[href="{% url 'authors' %}"] {
+            text-decoration: underline;
+            color: blue;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</body>
+</html>

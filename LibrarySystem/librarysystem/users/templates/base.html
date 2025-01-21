@@ -1,0 +1,74 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Library Management System{% endblock %}</title>
+    <style>
+        .top-right-buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .top-right-buttons button {
+            margin-left: 10px;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .active {
+            text-decoration: underline;
+            color: blue;
+        }
+
+        .content {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="top-right-buttons">
+        {% if user.is_authenticated %}
+            <button onclick="location.href='{% url 'home' %}'">Home</button>
+            <button onclick="location.href='{% url 'logout' %}'">Logout</button>
+        {% else %}
+            <button onclick="location.href='{% url 'login' %}'">Login</button>
+            <button onclick="location.href='{% url 'signup' %}'">Signup</button>
+        {% endif %}
+    </div>
+
+    <!-- Navigation Links -->
+    <nav>
+        <ul>
+            <li><a href="{% url 'library' %}" class="{% if request.path == '/library/' %}active{% endif %}">Libraries</a></li>
+            <li><a href="{% url 'books' %}" class="{% if request.path == '/books/' %}active{% endif %}">Books</a></li>
+            <li><a href="{% url 'authors' %}" class="{% if request.path == '/authors/' %}active{% endif %}">Authors</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Block -->
+    <div class="content">
+        {% block content %}
+        <!-- Specific page content will go here -->
+        {% endblock %}
+    </div>
+    
+</body>
+</html>
