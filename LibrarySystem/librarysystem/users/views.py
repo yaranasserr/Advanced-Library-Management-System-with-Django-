@@ -8,7 +8,8 @@ from django.urls import reverse_lazy
 
 from .forms import SignUpForm , InputForm , ProfileForm
 
-from .models import Profile
+from .models import Profile 
+from borrow.models import Borrow
 
 def home(request):
     return render(request, 'home.html')
@@ -24,8 +25,6 @@ class SignUpView(CreateView):
         user = form.save()  # Save the user instance
         login(self.request, user)  # Log the user in immediately after signing up
         return redirect('dashboard')
-
-
 
 
 
@@ -65,3 +64,11 @@ def profile_view(request):
         form = ProfileForm(instance=profile)
 
     return render(request, 'profile.html', {'form': form})
+
+@login_required
+def dashboard(request):
+    # Get all the borrow records for the logged-in user
+    borrows = Borrow.objects.filter(user=request.user)
+    
+    # Pass the borrowed books to the template
+    return render(request, 'dashboard.html', {'borrows': borrows})

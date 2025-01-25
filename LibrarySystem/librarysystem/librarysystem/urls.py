@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('users.urls')),      
     path('library/', include('library.urls')),  
     path('books/', include('books.urls')),      
-    path('authors/', include('authors.urls')),  
+    path('authors/', include('authors.urls')), 
+     path('borrow/', include('borrow.urls')), 
 ]
 

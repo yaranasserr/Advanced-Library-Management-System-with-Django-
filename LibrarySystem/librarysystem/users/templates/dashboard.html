@@ -4,74 +4,70 @@
 
 {% block content %}
     <h1>Welcome, {{ first_name }}!</h1>
-    <p>This is your dashboard. You are now logged in and ready to explore!</p>
+ 
+<table>
+    <theead>
+        <tr>
+            <th>Book Name</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Library</th>
+            <th>Borrowed Date</th>
+            <th>Return Date</th>
+            <th>Penalty</th>
+        </tr>
+    </theead>
+    <tbody>
+        {% for borrow in borrows %}
+            <tr>
+                <td>{{ borrow.book.book_name }}</td>
+                <td>{{ borrow.book.category.category_name }}</td>
+                <td>{{ borrow.book.author.author_name }}</td>
+                <td>{{ borrow.book.library.library_name }}</td>
+                <td>{{ borrow.borrow_date }}</td>
+                <td>{{ borrow.return_date }}</td>
+                <td>{{ borrow.penalty }}</td>
+                <td>
+                    <form action="{% url 'unborrow_book' borrow.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="unborrow-btn">Un Borrow</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+   
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-    <!-- Button container for positioning -->
-    <div class="button-container">
-        <!-- Home Button -->
-        <a href="{% url 'home' %}">
-            <button class="home-btn">Go to Home</button>
-        </a>
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
 
-        <a href="{% url 'profile' %}">
-            <button class="profile-btn">Profile</button>
-        </a>
+    th {
+        background-color: #f2f2f2;
+    }
 
-        <!-- Logout Button -->
-        <a href="{% url 'logout' %}">
-            <button class="logout-btn">Logout</button>
-        </a>
-    </div>
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
 
-    <!-- Styles -->
-    <style>
-        /* Position the buttons at the top-right corner */
-        .button-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
 
-        .button-container a {
-            margin-left: 10px;  /* Space between buttons */
-        }
 
-        /* Style for the logout button */
-        .logout-btn {
-            background-color: red;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
+    .unborrow-btn {
+        padding: 5px 10px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
 
-        .logout-btn:hover {
-            background-color: darkred;
-        }
 
-        /* Style for the general button */
-        .home-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .home-btn:hover {
-            background-color: #45a049;
-        }
-
-        .profile-btn {
-            background-color: #4c90af;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .profile-btn:hover {
-            background-color: #4c90af;
-        }
-    </style>
+</style>
 {% endblock %}

@@ -68,8 +68,14 @@
                     <td>{{ book.library.library_name }}</td>
                     <td>{{ book.copies }}</td>
                     <td>
-                        <!-- Borrow button (no functionality yet) -->
-                        <button class="borrow-btn">Borrow</button>
+                        {% if user.is_authenticated %}
+                            <form action="{% url 'borrow_book' book.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="borrow-btn">Borrow</button>
+                            </form>
+                        {% else %}
+                            <button class="borrow-btn" disabled>Login to Borrow</button>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

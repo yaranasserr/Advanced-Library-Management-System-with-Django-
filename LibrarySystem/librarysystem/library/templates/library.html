@@ -1,36 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Library Management</h1>
+    <h1>Library List</h1>
 
-    <!-- Filter Form -->
+
     <div class="filter-form">
         <form method="GET" action="{% url 'library' %}">
-            <div class="filter-group">
-                <label for="category">Category:</label>
-                <select name="category" id="category">
-                    <option value="">All Categories</option>
-                    {% for category in categories %}
-                        <option value="{{ category.id }}" {% if category.id == category_filter %}selected{% endif %}>
-                            {{ category.category_name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
+         
+            <input type="text" name="category_name" placeholder="Search Category" value="{{ request.GET.category_name }}">
+            <select name="category" id="category">
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id == category_filter %}selected{% endif %}>
+                        {{ category.category_name }}
+                    </option>
+                {% endfor %}
+            </select>
 
-            <div class="filter-group">
-                <label for="author">Author:</label>
-                <select name="author" id="author">
-                    <option value="">All Authors</option>
-                    {% for author in authors %}
-                        <option value="{{ author.id }}" {% if author.id == author_filter %}selected{% endif %}>
-                            {{ author.author_name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
+            <!-- Author Filter -->
+            <input type="text" name="author_name" placeholder="Search Author" value="{{ request.GET.author_name }}">
+            <select name="author" id="author">
+                <option value="">Select Author</option>
+                {% for author in authors %}
+                    <option value="{{ author.id }}" {% if author.id == author_filter %}selected{% endif %}>
+                        {{ author.author_name }}
+                    </option>
+                {% endfor %}
+            </select>
 
-            <button type="submit">Apply Filters</button>
+            <button type="submit">Filter</button>
+            <!-- Reset Filters Button -->
+            <a href="{% url 'library' %}" class="reset-button"><button type="button">Reset Filters</button></a>
         </form>
     </div>
 
@@ -56,52 +56,37 @@
         </tbody>
     </table>
 
+    <!-- Back to Home Link -->
     <a href="{% url 'home' %}">Back to Home</a>
-{% endblock %}
 
-<!-- Styles -->
+
 <style>
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
     }
 
     th, td {
-        padding: 15px;
+        padding: 10px;
         text-align: left;
         border: 1px solid #ddd;
     }
 
     th {
         background-color: #f2f2f2;
-        font-weight: bold;
     }
 
     tr:nth-child(even) {
         background-color: #f9f9f9;
     }
 
-    tr:hover {
-        background-color: #f1f1f1;
-    }
-
     .filter-form {
         margin-bottom: 20px;
     }
 
-    .filter-group {
-        margin-bottom: 10px;
-    }
-
-    .filter-group label {
-        margin-right: 5px;
-    }
-
-    .filter-form select {
+    .filter-form input, .filter-form select {
         padding: 8px;
         margin-right: 10px;
-        width: 250px;
     }
 
     .filter-form button {
@@ -110,25 +95,27 @@
         color: white;
         border: none;
         cursor: pointer;
-        width: 150px;
     }
 
     .filter-form button:hover {
         background-color: #45a049;
     }
 
-    /* Back Link Style */
+    .reset-button {
+        background-color: #f44336;
+    }
+
+    .reset-button:hover {
+        background-color: #d32f2f;
+    }
+
     a {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px;
-        background-color: #008CBA;
-        color: white;
         text-decoration: none;
-        border-radius: 4px;
+        color: #2850a7;
     }
 
     a:hover {
-        background-color: #007B9E;
+        text-decoration: underline;
     }
 </style>
+{% endblock %}
