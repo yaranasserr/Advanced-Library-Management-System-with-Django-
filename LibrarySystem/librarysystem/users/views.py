@@ -11,6 +11,8 @@ from .forms import SignUpForm , InputForm , ProfileForm
 from .models import Profile 
 from borrow.models import Borrow
 
+
+
 def home(request):
     return render(request, 'home.html')
 
@@ -39,7 +41,7 @@ def login_view(request):
         else:
             return HttpResponse('Invalid credentials')
     else:
-        form = InputForm()  # Ensure the form is passed here
+        form = InputForm()  
         return render(request, 'login.html', {'form': form})
     
 def logout_user(request):
@@ -67,8 +69,9 @@ def profile_view(request):
 
 @login_required
 def dashboard(request):
-    # Get all the borrow records for the logged-in user
+   
     borrows = Borrow.objects.filter(user=request.user)
     
-    # Pass the borrowed books to the template
     return render(request, 'dashboard.html', {'borrows': borrows})
+
+

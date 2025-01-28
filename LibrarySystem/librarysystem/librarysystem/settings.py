@@ -127,3 +127,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# MailHog 
+# SMTP server on port 1025 (for sending emails)
+# Web interface on port 8025 (to view emails)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025  # MailHog's SMTP port
+EMAIL_USE_TLS = False  # MailHog doesn't need TLS
+DEFAULT_FROM_EMAIL = 'noreply@yourdomain.com'

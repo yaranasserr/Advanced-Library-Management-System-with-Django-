@@ -19,3 +19,6 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ['street_address', 'city', 'state_province', 'postal_code', 'country']
 
+
+        
+
