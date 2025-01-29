@@ -3,7 +3,9 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Welcome, {{ first_name }}!</h1>
+<h1>Welcome, {{ user.first_name }}!</h1>
+
+
     <p>The borrowing period is restricted to 30 days from the date of borrowing. After this period, a penalty of $0.5 will be applied for each overdue day.</p>
 
 <table>

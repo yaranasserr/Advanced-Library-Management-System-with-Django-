@@ -34,27 +34,40 @@
         </form>
     </div>
 
-    <!-- Display Library List -->
-    <table>
-        <thead>
+   <!-- Display Library List -->
+<table>
+    <thead>
+        <tr>
+            <th>Library Name</th>
+            <th>Address</th>
+            {% if user.is_authenticated %}
+                <th>Distance (km)</th>  <!-- Display the Distance column only if the user is logged in -->
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in library_data %}
             <tr>
-                <th>Library Name</th>
-                <th>Address</th>
+                <td>{{ item.library.library_name }}</td>
+                <td>{{ item.library.address }}</td>
+                {% if user.is_authenticated %}
+                    <td>
+                        {% if item.distance %}
+                            {{ item.distance|floatformat:2 }} km  <!-- Show distance rounded to 2 decimal places -->
+                        {% else %}
+                            N/A  <!-- If no distance, display 'N/A' -->
+                        {% endif %}
+                    </td>
+                {% endif %}
             </tr>
-        </thead>
-        <tbody>
-            {% for library in libraries %}
-                <tr>
-                    <td>{{ library.library_name }}</td>
-                    <td>{{ library.address }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="2">No libraries found</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        {% empty %}
+            <tr>
+                <td colspan="{% if user.is_authenticated %}3{% else %}2{% endif %}">No libraries found</td>  <!-- Adjust colspan based on login status -->
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 
     <!-- Back to Home Link -->
     <a href="{% url 'home' %}">Back to Home</a>

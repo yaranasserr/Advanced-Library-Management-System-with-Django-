@@ -3,6 +3,7 @@
 {% block title %}{{ author.author_name }}'s Books{% endblock %}
 
 {% block content %}
+{% load a_custom_filters %}
     <h1>{{ author.author_name }}'s Books</h1>
 
     <!-- Filter Form -->
@@ -41,6 +42,8 @@
                 <th>Book Name</th>
                 <th>Category</th>
                 <th>Library</th>
+                <th>No. of Copies</th>
+                <th>Borrow</th>
             </tr>
         </thead>
         <tbody>
@@ -49,6 +52,40 @@
                     <td>{{ book.book_name }}</td>
                     <td>{{ book.category.category_name }}</td>
                     <td>{{ book.library.library_name }}</td>
+                    <td>{{ book.copies }}</td>
+                    <td>
+                        {% if user.is_authenticated %}
+                            {% if book.copies > 0 %}
+                                {% if borrowed_books|get_item:book.id %}
+                                    <strong>Already borrowed</strong>
+                                {% else %}
+                                  
+                                    <form method="POST" action="{% url 'borrow_book' book.id %}" onsubmit="return validateForm(event, {{ book.id }})">
+                                        {% csrf_token %}
+                                        
+                                  
+                                        <label for="start_date_{{ book.id }}">Start Date</label>
+                                        <input type="date" name="start_date" id="start_date_{{ book.id }}" 
+                                            min="{{ today }}" onchange="updateReturnDateMin({{ book.id }})" required>
+                                        <br><br>
+                                        
+                                      
+                                        <label for="return_date_{{ book.id }}">Return Date</label>
+                                        <input type="date" name="return_date" id="return_date_{{ book.id }}"
+                                            min="{{ today }}" max="{{ max_return_date }}" required>
+                                        <br><br>
+    
+                                       
+                                        <button type="submit" class="borrow-btn">Borrow</button>
+                                    </form>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'notify_when_available' book.id %}">Notify me when available</a>
+                            {% endif %}
+                        {% else %}
+                            <button class="borrow-btn" onclick="showLoginPrompt()">Borrow</button>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -57,21 +94,120 @@
     <!-- Back Link -->
     <a href="{% url 'authors' %}" class="back-link">Back to Author List</a>
 
-{% endblock %}
+<!-- Success Message Modal -->
+<div id="success-modal" class="modal">
+    <div class="modal-content">
+        <p id="success-message"></p>
+        <button onclick="goToDashboard()">Go to Dashboard</button>
+        <button onclick="closeSuccessModal()">Close</button>
+    </div>
+</div>
+
+<!-- Login/Signup Prompt Modal -->
+<div id="login-prompt" class="login-prompt">
+    <div class="modal-content">
+        <h3>Please log in or sign up to borrow books.</h3>
+        <a href="{% url 'login' %}" class="login-link">Login</a>
+        <a href="{% url 'signup' %}" class="signup-link">Sign Up</a>
+        <button onclick="closeLoginPrompt()">Close</button>
+    </div>
+</div>
+
+
+<script>
+   let booksBorrowed = 0;
+
+
+function showSuccessMessage(bookName, returnDate) {
+document.getElementById('success-message').textContent = `The book "${bookName}" is borrowed successfully! Your return date is ${returnDate}.`;
+document.getElementById('success-modal').style.display = "flex";
+
+}
+
+
+function closeSuccessModal() {
+document.getElementById('success-modal').style.display = "none";
+}
+
+// Navigate to the dashboard
+function goToDashboard() {
+window.location.href = "{% url 'dashboard' %}";
+}
+
+// Validate form before submission
+function validateForm(event, bookId) {
+let returnDate = document.getElementById('return_date_' + bookId).value;
+let today = new Date().toISOString().split('T')[0];
+let maxDate = new Date();
+maxDate.setDate(maxDate.getDate() + 30);
+let maxReturnDate = maxDate.toISOString().split('T')[0];
+
+// Check for more than 3 books borrowed
+if (booksBorrowed >= 3) {
+    alert('You can borrow only 3 books at a time.');
+    event.preventDefault();
+    return false;
+}
+
+// Check if return date is more than 30 days
+if (returnDate > maxReturnDate) {
+    alert('Return date cannot exceed 30 days.');
+    event.preventDefault();
+    return false;
+}
+
+// If all validations pass, show success message
+showSuccessMessage('Book Title', returnDate); // Replace 'Book Title' with actual book name from server
+return true;
+}
+
+// Show the login/signup prompt if the user is not logged in
+function showLoginPrompt() {
+document.getElementById("login-prompt").style.display = "flex";
+}
+
+// Close the login/signup prompt
+function closeLoginPrompt() {
+document.getElementById("login-prompt").style.display = "none";
+}
+
+function updateReturnDateMin(bookId) {
+// Get the selected start date
+const startDateInput = document.getElementById(`start_date_${bookId}`);
+const returnDateInput = document.getElementById(`return_date_${bookId}`);
+
+// Set the min attribute of the return date to the selected start date
+if (startDateInput.value) {
+    returnDateInput.min = startDateInput.value;
+} else {
+    // Reset to today's date if no start date is selected
+    returnDateInput.min = new Date().toISOString().split('T')[0];
+}
+}
+
+</script>
 
 <!-- Styles -->
-<style>
-    /* Table Styles */
+ <!-- Styles -->
+ <style>
+    .info-message {
+        background-color: #f9f9f9;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        color: #333;
+    }
+
     table {
         width: 100%;
-        border-collapse: collapse; /* Ensures borders collapse into a single line */
-        margin-top: 20px;
+        border-collapse: collapse;
     }
 
     th, td {
-        padding: 12px;
+        padding: 10px;
         text-align: left;
-        border: 1px solid #ddd; /* Adds borders to both table cells and headers */
+        border: 1px solid #ddd;
     }
 
     th {
@@ -82,11 +218,6 @@
         background-color: #f9f9f9;
     }
 
-    tr:hover {
-        background-color: #ddd;
-    }
-
-    /* Filter Form Styles */
     .filter-form {
         margin-bottom: 20px;
     }
@@ -108,18 +239,68 @@
         background-color: #45a049;
     }
 
-    /* Back Link Styles */
-    .back-link {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px;
-        background-color: #008CBA;
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
+    .reset-button {
+        background-color: #f44336;
     }
 
-    .back-link:hover {
-        background-color: #007B9E;
+    .reset-button:hover {
+        background-color: #d32f2f;
+    }
+
+    .borrow-btn {
+        padding: 5px 10px;
+        background-color: #2850a7;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .borrow-btn:hover {
+        background-color: #218838;
+    }
+
+    /* Modal Styling */
+    .login-prompt, .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .login-link, .signup-link {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .login-link:hover, .signup-link:hover {
+        background-color: #45a049;
+    }
+
+    button {
+        margin-top: 10px;
+    }
+
+    #success-modal .modal-content {
+        padding: 30px;
+        font-size: 18px;
     }
 </style>
+
+{% endblock %}

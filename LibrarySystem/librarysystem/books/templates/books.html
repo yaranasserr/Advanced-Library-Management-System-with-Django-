@@ -3,6 +3,7 @@
 {% block title %}Books List{% endblock %}
 
 {% block content %}
+{% load custom_filters %}
 
     <!-- Borrowing Period Message -->
     <div class="info-message">
@@ -61,7 +62,6 @@
                 <th>Library</th>
                 <th>No. of Copies</th>
                 <th>Borrow</th>
-               
             </tr>
         </thead>
         <tbody>
@@ -75,39 +75,41 @@
                     <td>
                         {% if user.is_authenticated %}
                             {% if book.copies > 0 %}
-                                <form method="POST" action="{% url 'borrow_book' book.id %}" onsubmit="return validateForm(event, {{ book.id }})">
-                                    {% csrf_token %}
-                                    
-                                    
-                                    
-                                    <!-- Start Date Selection -->
-                                    <label for="start_date_{{ book.id }}">Start Date</label>
-                                    <input type="date" name="start_date" id="start_date_{{ book.id }}" 
-                                        min="{{ today }}" onchange="updateReturnDateMin({{ book.id }})" required>
-                                    <br><br>
-                                    
-                                    <!-- Return Date Selection -->
-                                    <label for="return_date_{{ book.id }}">Return Date</label>
-                                    <input type="date" name="return_date" id="return_date_{{ book.id }}"
-                                        min="{{ today }}" max="{{ max_return_date }}" required>
+                                {% if borrowed_books|get_item:book.id %}
+                                    <strong>Already borrowed</strong>
+                                {% else %}
+                                  
+                                    <form method="POST" action="{% url 'borrow_book' book.id %}" onsubmit="return validateForm(event, {{ book.id }})">
+                                        {% csrf_token %}
+                                        
+                                  
+                                        <label for="start_date_{{ book.id }}">Start Date</label>
+                                        <input type="date" name="start_date" id="start_date_{{ book.id }}" 
+                                            min="{{ today }}" onchange="updateReturnDateMin({{ book.id }})" required>
                                         <br><br>
-
-                                    <!-- Borrow Button -->
-                                    <button type="submit" class="borrow-btn">Borrow</button>
-
-                                </form>
+                                        
+                                      
+                                        <label for="return_date_{{ book.id }}">Return Date</label>
+                                        <input type="date" name="return_date" id="return_date_{{ book.id }}"
+                                            min="{{ today }}" max="{{ max_return_date }}" required>
+                                        <br><br>
+    
+                                       
+                                        <button type="submit" class="borrow-btn">Borrow</button>
+                                    </form>
+                                {% endif %}
                             {% else %}
-                                <span>Notify When Availiable</span>
+                                <a href="{% url 'notify_when_available' book.id %}">Notify me when available</a>
                             {% endif %}
                         {% else %}
                             <button class="borrow-btn" onclick="showLoginPrompt()">Borrow</button>
                         {% endif %}
-
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    
     
 
     <!-- Success Message Modal -->

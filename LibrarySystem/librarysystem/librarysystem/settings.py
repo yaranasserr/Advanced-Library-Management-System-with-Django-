@@ -137,4 +137,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025  # MailHog's SMTP port
 EMAIL_USE_TLS = False  # MailHog doesn't need TLS
-DEFAULT_FROM_EMAIL = 'noreply@yourdomain.com'
+DEFAULT_FROM_EMAIL = 'noreply@librarymanagement.com'
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+# Celery Beat
+INSTALLED_APPS += ['django_celery_beat']

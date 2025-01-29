@@ -17,8 +17,15 @@ class InputForm(forms.Form):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['street_address', 'city', 'state_province', 'postal_code', 'country']
+        fields = ['street_address', 'city', 'state_province', 'postal_code', 'country']  # Only these fields are visible to the user
 
-
+    def save(self, commit=True):
+      
+        profile = super().save(commit=False)
         
-
+        if commit:
+            profile.save()
+       
+        profile.update_location()
+        
+        return profile

@@ -37,7 +37,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('dashboard')
+            return redirect('books')
         else:
             return HttpResponse('Invalid credentials')
     else:

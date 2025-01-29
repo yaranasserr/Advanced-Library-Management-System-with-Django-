@@ -14,14 +14,24 @@ from books.models import Book, Category
 
 # Initialize Faker
 fake = Faker()
+library_locations = [
+    (37.423021, -122.083739),  # Googleplex (Google Headquarters), Mountain View, CA, USA
+    (40.748817, -73.985428),   # Empire State Building, New York City, USA
+    (51.507351, -0.127758),    # Big Ben, London, UK
+    (48.856613, 2.352222),     # Eiffel Tower, Paris, France
+    (34.052235, -118.243683),  # Hollywood Sign, Los Angeles, CA, USA
+    (39.904202, 116.407395),  ] # Forbidden City, Beijing, China
 
 def seed_libraries(n):
-    for _ in range(n):
+    for i in range(n):
+        # Select a location from predefined ones
+        lat, lon = library_locations[i % len(library_locations)]
+        
         Library.objects.create(
             library_name=fake.company(),
             address=fake.address(),
-            latitude=fake.latitude(),
-            longitude=fake.longitude()
+            latitude=lat,
+            longitude=lon
         )
 
 def seed_authors(n):
@@ -32,9 +42,7 @@ def seed_authors(n):
 
 def seed_categories():
     categories = [
-        "Fiction", "Non-fiction", "Mystery", "Science Fiction", "Fantasy", 
-        "Romance", "Thriller", "Biography", "Historical Fiction", "Science", 
-        "Technology", "Philosophy", "Arts", "Psychology", "Health"
+       "Adventure", "Crime", "Horror", "Self-help", "Poetry"
     ]
     for category in categories:
         Category.objects.create(category_name=category)
@@ -55,7 +63,7 @@ def seed_books(n):
 
 def run_seed():
     print("Seeding database...")
-    seed_libraries(5)  # Add 5 libraries
+    seed_libraries(6)  # Add 5 libraries
     seed_authors(10)   # Add 10 authors
     seed_categories()  # Add predefined categories
     seed_books(20)     # Add 20 books

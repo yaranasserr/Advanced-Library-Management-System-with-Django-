@@ -42,6 +42,8 @@
             <tr>
                 <th>Author Name</th>
                 <th>Book Count</th>
+            
+
             </tr>
         </thead>
         <tbody>
@@ -52,6 +54,8 @@
                         <a href="{% url 'author_detail' author.id %}">{{ author.author_name }}</a>
                     </td>
                     <td>{{ author.book_count_value }}</td>
+                    
+                    
                 </tr>
             {% endfor %}
         </tbody>
