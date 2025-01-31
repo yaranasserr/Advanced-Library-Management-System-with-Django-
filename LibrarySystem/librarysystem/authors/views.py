@@ -4,7 +4,7 @@ from django.db.models import Count
 from books.models import Library ,Category
 from .models import Author
 from borrow.models import Borrow
-
+from django.utils.translation import gettext as _
 
 
 def author_view(request):
