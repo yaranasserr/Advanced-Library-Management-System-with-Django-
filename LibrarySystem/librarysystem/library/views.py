@@ -1,4 +1,3 @@
-# library/views.py
 from django.shortcuts import render
 from .models import Library
 from users.models import Profile  
@@ -11,9 +10,11 @@ def library_view(request):
 
     libraries = Library.objects.all()
 
+    user_profile = None
     if request.user.is_authenticated:
+   
         user_profile = request.user.profile  
-        user_profile = None  
+
     if category_filter:
         libraries = libraries.filter(books__category__id=category_filter)
 
@@ -23,13 +24,12 @@ def library_view(request):
     categories = Category.objects.all()
     authors = Author.objects.all()
 
-    
     library_data = []
     for library in libraries:
-        if user_profile:
-            distance = library.get_distance_from_user(user_profile)
-        else:
-            distance = None
+        distance = None
+        
+        if user_profile and user_profile.latitude and user_profile.longitude:
+            distance = library.get_distance_from_user(user_profile.latitude, user_profile.longitude)
         library_data.append({
             'library': library,
             'distance': distance

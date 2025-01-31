@@ -2,7 +2,9 @@
 
 {% block content %}
     <h1>Library List</h1>
-
+    {% if user.is_authenticated %}
+        <p>Enter your address in the <a href="{% url 'profile' %}">Profile Settings</a> to find the nearest libraries.</p>
+    {% endif %}
 
     <div class="filter-form">
         <form method="GET" action="{% url 'library' %}">
