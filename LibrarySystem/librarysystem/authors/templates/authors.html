@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Authors List{% endblock %}
+
+{% block content %}
+    <h1>Author List</h1>
+
+    <!-- Filter Form -->
+    <div class="filter-form">
+        <form method="GET" action="{% url 'authors' %}">
+            <!-- Category filter: type or choose from dropdown -->
+            <input type="text" name="category_name" placeholder="Search Category" value="{{ request.GET.category_name }}">
+            <select name="category">
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                        {{ category.category_name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <!-- Library filter: type or choose from dropdown -->
+            <input type="text" name="library_name" placeholder="Search Library" value="{{ request.GET.library_name }}">
+            <select name="library">
+                <option value="">Select Library</option>
+                {% for library in libraries %}
+                    <option value="{{ library.id }}" {% if request.GET.library == library.id|stringformat:"s" %}selected{% endif %}>
+                        {{ library.library_name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Filter</button>
+            <!-- Reset Filters Button -->
+            <a href="{% url 'authors' %}" class="reset-button"><button type="button">Reset Filters</button></a>
+        </form>
+    </div>
+
+    <!-- Display Author List -->
+    <table>
+        <thead>
+            <tr>
+                <th>Author Name</th>
+                <th>Book Count</th>
+            
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for author in authors_with_book_count %}
+                <tr>
+                    <td>
+                        <!-- Link to author detail page -->
+                        <a href="{% url 'author_detail' author.id %}">{{ author.author_name }}</a>
+                    </td>
+                    <td>{{ author.book_count_value }}</td>
+                    
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Styles -->
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .filter-form {
+            margin-bottom: 20px;
+        }
+
+        .filter-form input, .filter-form select {
+            padding: 8px;
+            margin-right: 10px;
+        }
+
+        .filter-form button {
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .filter-form button:hover {
+            background-color: #45a049;
+        }
+
+        .reset-button {
+            background-color: #f44336;
+        }
+
+        .reset-button:hover {
+            background-color: #d32f2f;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2850a7;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+{% endblock %}

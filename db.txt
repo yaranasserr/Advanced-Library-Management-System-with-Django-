@@ -1,0 +1,48 @@
+Library
+-
+LibraryID PK int
+LibraryName string
+Address string
+
+Author
+-
+AuthorID PK int
+AuthorName string
+
+Category
+-
+CategoryID PK int
+CategoryName string
+
+Book
+-
+BookID PK int
+BookName string
+AuthorID int FK >- Author.AuthorID
+CategoryID int FK >- Category.CategoryID
+LibraryID int FK >- Library.LibraryID
+Count int
+
+Borrow
+-
+BorrowID PK int
+BookID int FK >- Book.BookID
+UserID int FK >- User.UserID
+StartDate timestamp
+ReturnDate timestamp
+
+Penalty
+-
+PenaltyID PK int
+UserID int FK >- User.UserID
+Amount decimal
+PenaltyDate timestamp
+
+User
+-
+UserID PK int
+Username string
+Firstname string
+Email string
+City string
+Address string

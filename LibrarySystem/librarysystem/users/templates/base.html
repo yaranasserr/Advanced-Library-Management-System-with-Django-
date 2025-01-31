@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Library Management System{% endblock %}</title>
+    <style>
+        /* Button Container Styling */
+        .button-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* General Button Styles */
+        .button-container a button {
+            background-color: #0066cc; /* Default Blue */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .button-container a button:hover {
+            background-color: #004d99; /* Darker Blue */
+        }
+
+        /* Logout Button Specific Style */
+        .logout-btn {
+            background-color: #cc0000; /* Red */
+        }
+
+        .logout-btn:hover {
+            background-color: #990000; /* Darker Red */
+        }
+
+        /* Profile Button Specific Style */
+        .profile-btn {
+            background-color: #00b33c; /* Green */
+        }
+
+        .profile-btn:hover {
+            background-color: #00802b; /* Darker Green */
+        }
+
+        /* Navigation Bar Styling */
+        nav {
+            margin-top: 60px; /* Adjusted for the top button container */
+            text-align: center;
+            background-color: #f8f8f8; /* Light background for the navbar */
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li {
+            display: inline-block;
+            margin: 0 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #0066cc; /* Default Blue */
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            background-color: #0066cc; /* Blue background on hover/active */
+            color: white;
+        }
+
+        /* Main Content Styling */
+        .content {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Button Container -->
+    <div class="button-container">
+        {% if user.is_authenticated %}
+            {% if request.path == '/dashboard/' %}
+                <!-- Replace Dashboard Button with Profile Button -->
+                <a href="{% url 'profile' %}"><button class="profile-btn">Profile</button></a>
+            {% else %}
+                <!-- Show Dashboard Button -->
+                <a href="{% url 'dashboard' %}"><button class="profile-btn">Dashboard</button></a>
+            {% endif %}
+            <a href="{% url 'home' %}"><button>Home</button></a>
+            <a href="{% url 'logout' %}"><button class="logout-btn">Logout</button></a>
+        {% else %}
+            <a href="{% url 'login' %}"><button>Login</button></a>
+            <a href="{% url 'signup' %}"><button>Signup</button></a>
+        {% endif %}
+    </div>
+
+    <!-- Navigation Links -->
+    <nav>
+        <ul>
+            <li><a href="{% url 'library' %}" class="{% if request.path == '/library/' %}active{% endif %}">Libraries</a></li>
+            <li><a href="{% url 'books' %}" class="{% if request.path == '/books/' %}active{% endif %}">Books</a></li>
+            <li><a href="{% url 'authors' %}" class="{% if request.path == '/authors/' %}active{% endif %}">Authors</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Block -->
+    <div class="content">
+        {% block content %}
+        <!-- Specific page content will go here -->
+        {% endblock %}
+    </div>
+    
+</body>
+</html>

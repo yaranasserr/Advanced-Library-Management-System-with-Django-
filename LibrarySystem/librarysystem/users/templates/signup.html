@@ -1,0 +1,24 @@
+<!-- <form action ="" method ="post" >
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Submit">
+</form> -->
+
+<p>Already a user? <a href="/login">Login</a></p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sign Up</button>
+    </form>
+</body>
+
+</html>

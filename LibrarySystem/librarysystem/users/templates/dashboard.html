@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Welcome, {{ user.first_name }}!</h1>
+
+
+    <p>The borrowing period is restricted to 30 days from the date of borrowing. After this period, a penalty of $0.5 will be applied for each overdue day.</p>
+
+<table>
+    <theead>
+        <tr>
+            <th>Book Name</th>
+            <!-- <th>Category</th>
+            <th>Author</th> -->
+            <th>Library</th>
+            <th>Borrowed Date</th>
+            <th>Return Date</th>
+            <th>Remaining Days</th>
+            <th>Overdue Days</th>
+            <th>Penalty</th>
+
+            <th>Status</th>
+        </tr>
+    </theead>
+    <tbody>
+        {% for borrow in borrows %}
+            <tr>
+                <td>{{ borrow.book.book_name }}</td>
+                <!-- <td>{{ borrow.book.category.category_name }}</td>
+                <td>{{ borrow.book.author.author_name }}</td> -->
+                <td>{{ borrow.book.library.library_name }}</td>
+                <td>{{ borrow.borrow_date }}</td>
+                <td>{{ borrow.return_date }}</td>
+                <td>{{ borrow.remaining_days }}</td>
+                <td>{{ borrow.over_due_days }}</td>
+                <td>{{ borrow.penalty }}</td>
+                <td>
+                    <form action="{% url 'unborrow_book' borrow.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="unborrow-btn">Un Borrow</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+   
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+
+
+    .unborrow-btn {
+        padding: 5px 10px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+
+</style>
+{% endblock %}

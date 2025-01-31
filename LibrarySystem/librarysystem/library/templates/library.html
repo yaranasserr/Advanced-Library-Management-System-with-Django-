@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Library List</h1>
+    {% if user.is_authenticated %}
+        <p>Enter your address in the <a href="{% url 'profile' %}">Profile Settings</a> to find the nearest libraries.</p>
+    {% endif %}
+
+    <div class="filter-form">
+        <form method="GET" action="{% url 'library' %}">
+         
+            <input type="text" name="category_name" placeholder="Search Category" value="{{ request.GET.category_name }}">
+            <select name="category" id="category">
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id == category_filter %}selected{% endif %}>
+                        {{ category.category_name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <!-- Author Filter -->
+            <input type="text" name="author_name" placeholder="Search Author" value="{{ request.GET.author_name }}">
+            <select name="author" id="author">
+                <option value="">Select Author</option>
+                {% for author in authors %}
+                    <option value="{{ author.id }}" {% if author.id == author_filter %}selected{% endif %}>
+                        {{ author.author_name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Filter</button>
+            <!-- Reset Filters Button -->
+            <a href="{% url 'library' %}" class="reset-button"><button type="button">Reset Filters</button></a>
+        </form>
+    </div>
+
+   <!-- Display Library List -->
+<table>
+    <thead>
+        <tr>
+            <th>Library Name</th>
+            <th>Address</th>
+            {% if user.is_authenticated %}
+                <th>Distance (km)</th>  <!-- Display the Distance column only if the user is logged in -->
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in library_data %}
+            <tr>
+                <td>{{ item.library.library_name }}</td>
+                <td>{{ item.library.address }}</td>
+                {% if user.is_authenticated %}
+                    <td>
+                        {% if item.distance %}
+                            {{ item.distance|floatformat:2 }} km  <!-- Show distance rounded to 2 decimal places -->
+                        {% else %}
+                            N/A  <!-- If no distance, display 'N/A' -->
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="{% if user.is_authenticated %}3{% else %}2{% endif %}">No libraries found</td>  <!-- Adjust colspan based on login status -->
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+    <!-- Back to Home Link -->
+    <a href="{% url 'home' %}">Back to Home</a>
+
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .filter-form {
+        margin-bottom: 20px;
+    }
+
+    .filter-form input, .filter-form select {
+        padding: 8px;
+        margin-right: 10px;
+    }
+
+    .filter-form button {
+        padding: 8px 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .filter-form button:hover {
+        background-color: #45a049;
+    }
+
+    .reset-button {
+        background-color: #f44336;
+    }
+
+    .reset-button:hover {
+        background-color: #d32f2f;
+    }
+
+    a {
+        text-decoration: none;
+        color: #2850a7;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
