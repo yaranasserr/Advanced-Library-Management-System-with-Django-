@@ -136,4 +136,41 @@ geopy
 Swagger
 Docker
 
+### **Running the Project With Docker**
+
+#### Prerequisites:
+- Docker installed on your system.
+- Docker Compose installed on your system.
+
+#### Steps to Run the App with Docker:
+
+
+Build the Docker Images:
+
+```
+docker-compose build
+```
+Start the Services:
+
+```
+docker-compose up
+```
+This will start the following services:
+
+- Django app (running on http://localhost:8000)
+
+- Redis (for Celery)
+
+- Celery worker
+
+- Celery beat
+
+- Mailhog (for email testing, accessible at http://localhost:8025)
+
+- Run Database Migrations:
+Open a new terminal and run:
+
+```
+docker-compose exec django python manage.py migrate
+```
 
