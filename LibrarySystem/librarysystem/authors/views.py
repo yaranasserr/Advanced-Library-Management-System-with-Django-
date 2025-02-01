@@ -11,28 +11,10 @@ def author_view(request):
 
     authors = Author.objects.all()
 
-
-    category_name = request.GET.get('category_name', '')
-    category_id = request.GET.get('category', '')
-    library_name = request.GET.get('library_name', '')
-    library_id = request.GET.get('library', '')
-
-   
-    if category_id:
-        authors = authors.filter(books__category__id=category_id)
-
-    
-    if library_id:
-        authors = authors.filter(books__library__id=library_id)
-
-    
-    categories = Category.objects.all()
-    libraries = Library.objects.all()
-
     authors_with_book_count = []
     for author in authors:
        
-        author.book_count_value = author.book_count(category_id if category_id else None)
+        author.book_count_value = author.book_count()
         authors_with_book_count.append(author)
 
     authors_with_book_count.sort(key=lambda author: author.book_count_value, reverse=True)
@@ -40,10 +22,7 @@ def author_view(request):
 
     return render(request, 'authors.html', {
         'authors_with_book_count': authors_with_book_count,
-        'categories': categories,
-        'libraries': libraries,
-        'category_name': category_name,
-        'library_name': library_name,
+
     })
 
 def author_detail(request, author_id):

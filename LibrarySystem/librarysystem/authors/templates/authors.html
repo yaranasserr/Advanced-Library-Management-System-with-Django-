@@ -5,36 +5,6 @@
 {% block content %}
     <h1>Author List</h1>
 
-    <!-- Filter Form -->
-    <div class="filter-form">
-        <form method="GET" action="{% url 'authors' %}">
-            <!-- Category filter: type or choose from dropdown -->
-            <input type="text" name="category_name" placeholder="Search Category" value="{{ request.GET.category_name }}">
-            <select name="category">
-                <option value="">Select Category</option>
-                {% for category in categories %}
-                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
-                        {{ category.category_name }}
-                    </option>
-                {% endfor %}
-            </select>
-
-            <!-- Library filter: type or choose from dropdown -->
-            <input type="text" name="library_name" placeholder="Search Library" value="{{ request.GET.library_name }}">
-            <select name="library">
-                <option value="">Select Library</option>
-                {% for library in libraries %}
-                    <option value="{{ library.id }}" {% if request.GET.library == library.id|stringformat:"s" %}selected{% endif %}>
-                        {{ library.library_name }}
-                    </option>
-                {% endfor %}
-            </select>
-
-            <button type="submit">Filter</button>
-            <!-- Reset Filters Button -->
-            <a href="{% url 'authors' %}" class="reset-button"><button type="button">Reset Filters</button></a>
-        </form>
-    </div>
 
     <!-- Display Author List -->
     <table>
@@ -42,7 +12,7 @@
             <tr>
                 <th>Author Name</th>
                 <th>Book Count</th>
-            
+         
 
             </tr>
         </thead>
@@ -50,10 +20,11 @@
             {% for author in authors_with_book_count %}
                 <tr>
                     <td>
-                        <!-- Link to author detail page -->
+        
                         <a href="{% url 'author_detail' author.id %}">{{ author.author_name }}</a>
                     </td>
                     <td>{{ author.book_count_value }}</td>
+            
                     
                     
                 </tr>
