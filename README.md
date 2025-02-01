@@ -46,6 +46,11 @@ The project is divided into 6 different apps, each handling a specific function:
 - **notifications:** Handles email notifications and reminders
 - **users:** Handles user authentication, registration, and password recovery
 
+## Database Schema
+
+![Database Schema](https://github.com/yaranasserr/Advanced-Library-Management-System-with-Django-/blob/main/QuickDBD-export.png?raw=true)
+
+
 ### Implementation Steps:
 1. **Started with the following apps:**
    - **Users:** Implemented user authentication (login, registration, password recovery)
