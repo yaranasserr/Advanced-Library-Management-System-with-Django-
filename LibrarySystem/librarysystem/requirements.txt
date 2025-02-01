@@ -1,0 +1,14 @@
+Django==4.2.18
+celery==5.4.0
+redis==5.2.1
+geopy==2.4.1
+django-celery-beat==2.7.0
+django-templated-mail==1.1.1
+django-timezone-field==7.1
+Faker==33.3.1
+kombu==5.4.2
+python-dateutil==2.9.0.post0
+python-crontab==3.2.0
+tzdata==2025.1
+vine==5.1.0
+gunicorn==21.2.0
