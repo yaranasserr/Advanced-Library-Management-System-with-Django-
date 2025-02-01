@@ -3,6 +3,8 @@
 
 ## Project Idea: Advanced Library Management System
 This project aims to build a comprehensive library management system that manages libraries, books, authors, and categories. The system includes features such as user registration, login, password recovery, and allows users to borrow and return multiple books in one transaction. It also provides notifications and real-time updates for book availability.
+## Demo
+[Watch the Demo](https://drive.google.com/file/d/1rKXsOfCiIBzHL6rUP-wOG7zNt-O-kqmw/view?usp=sharing)
 
 ## Key Features:
 - **Library Management:**
@@ -133,5 +135,5 @@ Mailhog
 geopy
 Swagger
 Docker
-## Demo
+
 
